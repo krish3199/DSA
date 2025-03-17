@@ -2,29 +2,35 @@
 using namespace std;
 
 int main() {
-    int user;
-    cout << "Enter the number of elements: ";
-    cin >> user;
-    int box[user];
-    
-    for (int i = 0; i < user; i++) {
-        cout << "box["<< i <<"]:" ;
-        cin >> box[i];
+    int n;
+
+    cout << "Enter the size of the array: ";
+    cin >> n;
+
+    int arr[n];
+
+    cout << "Enter the elements of the array: ";
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
     }
-    
-    cout << "Array after removing duplicates: ";
-    for (int i = 0; i < user; i++) {
-        bool isDuplicate = false;
-        for (int j = 0; j < i; j++) {
-            if (box[i] == box[j]) {
-                isDuplicate = true;
-                break;
+
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (arr[i] == arr[j]) {
+                for (int k = j; k < n - 1; k++) {
+                    arr[k] = arr[k + 1];
+                }
+                n--;
+                j--;
             }
         }
-        if (!isDuplicate) {
-            cout << box[i] << " ";
-        }
+    }
+
+    cout << "Array after removing duplicates: ";
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
     }
     cout << endl;
-    
+
+    return 0;
 }
