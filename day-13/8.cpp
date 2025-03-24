@@ -1,33 +1,42 @@
 #include <iostream>
 using namespace std;
 
-int fact (){
-    int size, max;
-
-    cout << "Enter the number of elements: ";
-    cin >> size;
-
-    int  box[size];
-
-    
-    for (int i = 0; i < size; i++) {
-        cout << "box [" << i <<  "] :" ;
-        cin >> box[i];
-    }
-
-    max = box[0];
-
-    for (int i = 1; i < size; i++) {
-        if (box[i] > max) {
-            max = box[i];
+void fact (int a , int b , int c){
+    if (a > b)
+    {
+        if (a > c)
+        {
+        cout << "First value is max.";
         }
+        else{
+        cout << "third value is max.";
+        }
+
     }
-
-    cout << "Maximum Value = " << max << endl;
-
-
+    else{
+        if (b > c)
+        {
+        cout << "second value is max.";
+        }
+        else{
+        cout << "third value is max.";
+        }
+       
+    }
+   
 }
 int main() {
-    fact();
+    int a ,b ,c;
+
+    cout << "Enter first value = ";
+    cin >> a;
+    
+    cout << "Enter first value = ";
+    cin >> b;
+
+    cout << "Enter first value = ";
+    cin >> c;
+    
+    fact(a , b ,c);
 
 }

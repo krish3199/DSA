@@ -20,6 +20,7 @@ int fact (){
     for (int i = 1; i < size; i++) {
         if (box[i] > max) {
             max = box[i];
+            
         }
     }
 
