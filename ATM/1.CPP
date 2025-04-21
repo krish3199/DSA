@@ -1,147 +1,192 @@
-#include <iostream>
+// Banking Sector //
+
+#include<iostream>
 using namespace std;
 
-// Base class
-class BankAccount {
+class bankAccount {
 protected:
     int accountNumber;
     string accountHolderName;
     double balance;
 
 public:
-    BankAccount(int accNum, string accHolder, double bal) {
-        accountNumber = accNum;
-        accountHolderName = accHolder;
-        balance = bal;
+    void detail(int accountNumber, string accountHolderName, double balance) {
+        this->accountNumber = accountNumber;
+        this->accountHolderName = accountHolderName;
+        this->balance = balance;
+
+        cout << "Account Number : " << accountNumber << endl;
+        cout << "Account Holder Name : " << accountHolderName << endl;
+        cout << "Balance : " << balance << endl;
+        cout << "======================================================" << endl;
     }
 
-    void deposit(double amount) {
-        balance += amount;
-        cout << "Deposited: " << amount << " | New Balance: " << balance << endl;
-    }
-
-    virtual void withdraw(double amount) {
-        if (amount > balance)
-            cout << "Insufficient balance!" << endl;
-        else {
-            balance -= amount;
-            cout << "Withdrawn: " << amount << " | Remaining Balance: " << balance << endl;
+    void deposit(int amount) {
+        if (amount >= 0) {
+            balance = balance + amount;
+            cout << "Deposited : " << amount << endl;
+            cout << "Current balance : " << balance << endl;
+        } else {
+            cout << "Infuelnce deposit balance.....!!" << endl;
         }
+        cout << "=======================================================" << endl;
     }
 
-    double getBalance() const {
+    void withdraw(double amount) {
+        if (amount <= balance) {
+            balance = balance - amount;
+            cout << "Withdrawn : " << amount << endl;
+            cout << "Current balance : " << balance << endl;
+        } else {
+            cout << "Infuelnce withdraw balance.....!!" << endl;
+        }
+        cout << "-------------------------" << endl;
+    }
+
+    double getbalance() {
         return balance;
     }
 
-    virtual void displayAccountInfo() {
-        cout << "Account Number: " << accountNumber << endl;
-        cout << "Account Holder: " << accountHolderName << endl;
-        cout << "Balance: " << balance << endl;
+    void displayAccountDetails() {
+        cout << "Account Number : " << this->accountNumber << endl;
+        cout << "Account Holder Name : " << this->accountHolderName << endl;
+        cout << "Balance : " << this->balance << endl;
     }
-
-    virtual void calculateInterest() {}
 };
 
-// Derived class - Savings Account
-class SavingsAccount : public BankAccount {
+class Savingaccount : public bankAccount {
+public:
     double interestRate;
 
-public:
-    SavingsAccount(int accNum, string accHolder, double bal, double rate)
-        : BankAccount(accNum, accHolder, bal), interestRate(rate) {}
-
-    void calculateInterest() override {
-        double interest = balance * (interestRate / 100);
-        cout << "Interest Earned: " << interest << endl;
+    void calculateInterest(double interestRate) {
+        double interest = (getbalance() * interestRate) / 100;
+        balance = interest + balance;
+        cout << "Interest Rate is = " << interestRate << endl;
+        cout << "Interest is : " << interest << endl;
+        cout << "Current Balance = " << balance << endl;
+        cout << "==================================================" << endl;
     }
 };
 
-// Derived class - Checking Account
-class CheckingAccount : public BankAccount {
-    double overdraftLimit;
-
+class Checkingaccount : public bankAccount {
 public:
-    CheckingAccount(int accNum, string accHolder, double bal, double overdraft)
-        : BankAccount(accNum, accHolder, bal), overdraftLimit(overdraft) {}
+    int overdraftLimit;
 
-    void withdraw(double amount) override {
-        if (amount > balance + overdraftLimit)
-            cout << "Transaction declined: Overdraft limit exceeded!" << endl;
-        else {
-            balance -= amount;
-            cout << "Transaction successful. Remaining balance: " << balance << endl;
+    void checkOverdraft(int od, int overdraftLimit) {
+        this->overdraftLimit = overdraftLimit;
+        if (od <= getbalance() + overdraftLimit) {
+            double calculate = od - getbalance();
+            cout << calculate << endl;
+        } else if (od >= getbalance() + overdraftLimit) {
+            cout << "Enfluence balance !!" << endl;
+        } else if (od <= getbalance()) {
+            cout << "Already Balance.." << endl;
         }
+        cout << "===========================================" << endl;
     }
 };
 
-// Derived class - Fixed Deposit Account
-class FixedDepositAccount : public BankAccount {
-    int term;
-
+class FixedDepositAccount : public bankAccount {
 public:
-    FixedDepositAccount(int accNum, string accHolder, double bal, int duration)
-        : BankAccount(accNum, accHolder, bal), term(duration) {}
+    double term;
 
-    void calculateInterest() override {
-        double interest = balance * 0.05 * (term / 12.0);
-        cout << "Fixed Deposit Interest: " << interest << endl;
+    void calculateInterest(double interestRate, int amount, double term) {
+        this->term = term;
+        if (amount <= getbalance()) {
+            double interest = (getbalance() * interestRate * term) / (100 * 12);
+            double cal = interest + getbalance();
+            cout << "Interest Rate is = " << interestRate << endl;
+            cout << "Interest is = " << interest << endl;
+            
+            cout << "Current Balance = " << cal << endl;
+        } else {
+            cout << "Enfluence Balance !" << endl;
+        }
+        cout << "================================================" << endl;
     }
 };
 
 int main() {
-    int accNum, term;
-    string accHolder;
-    double bal, rate, overdraft, depositAmount, withdrawAmount;
+    int accountNumber;
+    string accountHolderName;
+    double balance, overdraft, term;
+    int amount;
+    int withdrawAmount;
     int choice;
 
-    cout << "Enter Account Number: ";
-    cin >> accNum;
-    cout << "Enter Account Holder Name: ";
-    cin.ignore();
-    getline(cin, accHolder);
-    cout << "Enter Initial Balance: ";
-    cin >> bal;
-    cout << "Enter Interest Rate for Savings Account: ";
-    cin >> rate;
-    cout << "Enter Overdraft Limit for Checking Account: ";
-    cin >> overdraft;
-    cout << "Enter Fixed Deposit Term (in months): ";
-    cin >> term;
+    cout << "Enter account number : ";
+    cin >> accountNumber;
+    cout << "Enter account holder name : ";
+    cin >> accountHolderName;
+    cout << "Enter balance : ";
+    cin >> balance;
 
-    BankAccount* accounts[3];
-    accounts[0] = new SavingsAccount(accNum, accHolder, bal, rate);
-    accounts[1] = new CheckingAccount(accNum, accHolder, bal, overdraft);
-    accounts[2] = new FixedDepositAccount(accNum, accHolder, bal, term);
+    cout << "==============================================" << endl;
+
+    Savingaccount bacc;
+    Checkingaccount cass;
+    FixedDepositAccount fass;
+
+    bacc.detail(accountNumber, accountHolderName, balance);
 
     do {
-        cout << "\nMenu:\n1. Deposit\n2. Withdraw\n3. Display Info\n4. Calculate Interest\n5. Exit\nEnter choice: ";
+        cout << "========== Banking Menu ==========" << endl;
+        cout << "1. Show Account Details" << endl;
+        cout << "2. Deposit Amount"<< endl;
+        cout << "3. Withdraw Amount" << endl;
+        cout << "4. Calculate Saving Interest" << endl;
+        cout << "5. Overdraft Check (Checking Account)" << endl;
+        cout << "6. Fixed Deposit Interest" << endl;
+        cout << "0. Exit" << endl;
+        cout << "Enter your choice: ";
         cin >> choice;
+        cout << "===============================================" << endl;
 
         switch (choice) {
-        case 1:
-            cout << "Enter Deposit Amount: ";
-            cin >> depositAmount;
-            for (int i = 0; i < 3; i++) accounts[i]->deposit(depositAmount);
-            break;
-        case 2:
-            cout << "Enter Withdraw Amount: ";
-            cin >> withdrawAmount;
-            for (int i = 0; i < 3; i++) accounts[i]->withdraw(withdrawAmount);
-            break;
-        case 3:
-            for (int i = 0; i < 3; i++) accounts[i]->displayAccountInfo();
-            break;
-        case 4:
-            for (int i = 0; i < 3; i++) accounts[i]->calculateInterest();
-            break;
-        case 5:
-            cout << "Exiting..." << endl;
-            break;
-        default:
-            cout << "Invalid choice!" << endl;
-        }
-    } while (choice != 5);
+            case 1:
+                bacc.displayAccountDetails(); 
+                break;
 
-    for (int i = 0; i < 3; i++) delete accounts[i];
-    return 0;
+            case 2:
+                cout << "Enter amount to deposit: ";
+                cin >> amount;
+                bacc.deposit(amount);
+                break;
+
+            case 3:
+                cout << "Enter amount to withdraw: ";
+                cin >> withdrawAmount;
+                bacc.withdraw(withdrawAmount);
+                break;
+
+            case 4:
+                bacc.calculateInterest(6.5);
+                break;
+
+            case 5:
+                cass.detail(accountNumber, accountHolderName, bacc.getbalance()); // ✅ Updated balance
+                cout << "Your OverdraftLimit (0 to 50000)" << endl;
+                cout << "Enter Withdrawal Amount to Overdraft from " << bacc.getbalance() + 50000 << " = ";
+                cin >> overdraft;
+                cass.checkOverdraft(overdraft, 50000);
+                break;
+
+            case 6:
+                cout << "Enter Amount for FixDeposit = ";
+                cin >> amount;
+                cout << "Enter FD Duration in month : ";
+                cin >> term;
+                fass.detail(accountNumber, accountHolderName, bacc.getbalance()); // ✅ Updated balance
+                fass.calculateInterest(7.32, amount, term);
+                break;
+
+            case 0:
+                cout << "Exiting... Thank you!" << endl;
+                break;
+
+            default:
+                cout << "Invalid choice! Please try again." << endl;
+        }
+    } while (choice != 0);
+
 }
