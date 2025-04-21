@@ -164,7 +164,7 @@ int main() {
                 break;
 
             case 5:
-                cass.detail(accountNumber, accountHolderName, bacc.getbalance()); // ✅ Updated balance
+                cass.detail(accountNumber, accountHolderName, bacc.getbalance());
                 cout << "Your OverdraftLimit (0 to 50000)" << endl;
                 cout << "Enter Withdrawal Amount to Overdraft from " << bacc.getbalance() + 50000 << " = ";
                 cin >> overdraft;
@@ -176,7 +176,7 @@ int main() {
                 cin >> amount;
                 cout << "Enter FD Duration in month : ";
                 cin >> term;
-                fass.detail(accountNumber, accountHolderName, bacc.getbalance()); // ✅ Updated balance
+                fass.detail(accountNumber, accountHolderName, bacc.getbalance()); 
                 fass.calculateInterest(7.32, amount, term);
                 break;
 
