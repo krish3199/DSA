@@ -76,7 +76,8 @@ void read(node *head)
     cout << "----------------------------------" << endl;
 }
 
-void update(node *&head, int matchval, int val){
+void update(node *&head, int matchval, int val)
+{
     node *temp = head;
     while (temp != NULL)
     {
@@ -125,7 +126,7 @@ int main()
                 start(userval, head);
                 break;
             case 2:
-                
+
                 cout << "Enter value that insert after that value = ";
                 cin >> match;
 
@@ -145,6 +146,7 @@ int main()
 
             break;
         case 2:
+            cout << "Programing is  reading.....";
             read(head);
             break;
         case 3:
